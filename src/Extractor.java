@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 public class Extractor {
 	StringBuilder episodes;
 	
-	public void getEpisodes() throws IOException {
-		URL oracle = new URL("http://germain-forestier.info/cours/bi/tp/episodes.html");
+	public void getEpisodes(String url) throws IOException {
+		URL oracle = new URL(url);
 		URLConnection yc = oracle.openConnection();
 		BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
 		String inputLine;
@@ -19,16 +19,21 @@ public class Extractor {
 		episodes = new StringBuilder("");
 		
 		while ((inputLine = in.readLine()) != null) {		
-			episodes.append(inputLine);
+			episodes.append(inputLine + "\n");
 		}
 	}
 	
-	public void instanciateEpisodes() {
-		Pattern p = Pattern.compile("<a.+itemprop=\"name\">([^<]+)</a>");
+	public Episode[] instanciateEpisodes() {
+		Pattern p = Pattern.compile("<a.+itemprop=\"name\">([^<]+)</a>.+\n.+itemprop=\"description\">([^<]+)</div>\n");
 		Matcher matcher = p.matcher(episodes.toString());
-		
+		Episode[] eps = new Episode[100];
+		int i = 0;
+
 		while (matcher.find()) {
-			System.out.println(matcher.group(1));
+			eps[i] = new Episode(matcher.group(1), matcher.group(2)); 
+			i++;
 		}
+		
+		return eps;
 	}
 }
