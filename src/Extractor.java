@@ -8,32 +8,33 @@ import java.util.regex.Pattern;
 
 
 public class Extractor {
-	StringBuilder episodes;
 	
-	public void getEpisodes(String url) throws IOException {
+	public Episode[] getEpisodes(String url) throws IOException {
+	    // lecture de l'url
 		URL oracle = new URL(url);
 		URLConnection yc = oracle.openConnection();
 		BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
 		String inputLine;
 		
-		episodes = new StringBuilder("");
+		StringBuilder episodes = new StringBuilder("");
 		
+		// contenu stocké dans episodes
 		while ((inputLine = in.readLine()) != null) {		
 			episodes.append(inputLine + "\n");
 		}
-	}
-	
-	public Episode[] instanciateEpisodes() {
-		Pattern p = Pattern.compile("<a.+itemprop=\"name\">([^<]+)</a>.+\n.+itemprop=\"description\">([^<]+)</div>\n");
-		Matcher matcher = p.matcher(episodes.toString());
-		Episode[] eps = new Episode[100];
-		int i = 0;
-
-		while (matcher.find()) {
-			eps[i] = new Episode(matcher.group(1), matcher.group(2)); 
-			i++;
-		}
 		
-		return eps;
+		// recherche par regex du titre et du résumé depuis episodes
+		Pattern p = Pattern.compile("<a.+itemprop=\"name\">([^<]+)</a>.+\n.+itemprop=\"description\">([^<]+)</div>\n");
+        Matcher matcher = p.matcher(episodes.toString());
+
+        Episode[] eps = new Episode[100];
+        int i = 0;
+
+        while (matcher.find()) {
+            eps[i] = new Episode(matcher.group(1), matcher.group(2)); 
+            i++;
+        }
+        
+        return eps;
 	}
 }

@@ -1,9 +1,5 @@
 import java.io.IOException;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.util.Version;
-
-
 public class Main {
 
 	/**
@@ -11,12 +7,14 @@ public class Main {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
+	    // Récupération des données
 		Extractor e = new Extractor();
-		e.getEpisodes("http://germain-forestier.info/cours/bi/tp/episodes.html");
-		Episode[] eps = e.instanciateEpisodes();
+		Episode[] eps = e.getEpisodes("http://germain-forestier.info/cours/bi/tp/episodes.html");
 		
-		StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_36);
-	}
+		// Traitement des données
+		MyAnalyzer a = new MyAnalyzer();
 
+		for (int i = 0; i < eps.length; i++)
+	        eps[i].setStemmedSummary(a.stem(eps[i].getSummary()));
+	}
 }
