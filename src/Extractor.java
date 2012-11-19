@@ -3,13 +3,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class Extractor {
 	
-	public Episode[] getEpisodes(String url) throws IOException {
+	public ArrayList<Episode> getEpisodes(String url) throws IOException {
 	    // lecture de l'url
 		URL oracle = new URL(url);
 		URLConnection yc = oracle.openConnection();
@@ -27,12 +28,10 @@ public class Extractor {
 		Pattern p = Pattern.compile("<a.+itemprop=\"name\">([^<]+)</a>.+\n.+itemprop=\"description\">([^<]+)</div>\n");
         Matcher matcher = p.matcher(episodes.toString());
 
-        Episode[] eps = new Episode[100];
-        int i = 0;
+        ArrayList<Episode> eps = new ArrayList<Episode>();
 
         while (matcher.find()) {
-            eps[i] = new Episode(matcher.group(1), matcher.group(2)); 
-            i++;
+            eps.add(new Episode(matcher.group(1), matcher.group(2))); 
         }
         
         return eps;

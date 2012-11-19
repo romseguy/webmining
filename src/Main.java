@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -9,12 +10,13 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 	    // Récupération des données
 		Extractor e = new Extractor();
-		Episode[] eps = e.getEpisodes("http://germain-forestier.info/cours/bi/tp/episodes.html");
+		ArrayList<Episode> eps = e.getEpisodes("http://germain-forestier.info/cours/bi/tp/episodes.html");
 		
 		// Traitement des données
 		MyAnalyzer a = new MyAnalyzer();
 
-		for (int i = 0; i < eps.length; i++)
-	        eps[i].setStemmedSummary(a.stem(eps[i].getSummary()));
+		for (int i = 0; i != eps.size(); i++) {
+	        eps.get(i).setStemmedSummary(a.stem(eps.get(i).getSummary()));
+		}
 	}
 }
