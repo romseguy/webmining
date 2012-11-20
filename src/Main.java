@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -44,5 +45,29 @@ public class Main {
 		for (Map.Entry<Integer, Double> entry : similEpisodeMap.entrySet()) {
 		     System.out.println("Episode " + entry.getKey() + " : " + entry.getValue());
 		}
+		
+		// Somme des occurences de chaque mot de chaque épisode
+		Map<String, Double> seasonFreqVector = new HashMap<String, Double>();
+
+		for (int i = 0; i != eps.size(); i++) {
+			// on récupère le vecteur de fréquence de chaque épisode
+			Map<String, Double> freqVector = eps.get(i).getFreqVector();
+
+			// pour chaque mot dans le vecteur
+			for (Map.Entry<String, Double> entry : freqVector.entrySet()) {
+				double value = entry.getValue();
+				
+				// on vérifie si le mot n'est pas déjà dans le vecteur saison
+				if (seasonFreqVector.containsKey(entry.getKey()))
+					// si c'est le cas la valeur à remplacer dans le vecteur saison sera la somme des 2
+					value += seasonFreqVector.get(entry.getKey());
+
+				seasonFreqVector.put(entry.getKey(), value);
+			}
+		}
+
+		/*for (Map.Entry<String, Double> entry : seasonFreqVector.entrySet()) {
+			System.out.println("Mot  " + entry.getKey() + " freq  " + entry.getValue());
+		}*/
 	}
 }
