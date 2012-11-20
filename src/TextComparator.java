@@ -7,12 +7,6 @@ import java.util.StringTokenizer;
 
 public class TextComparator {
 
-	public static void main(String[] args) {
-		String text1 = "Julie loves me more than Linda loves me";
-		String text2 = "Jane likes me more than Julie loves me";
-		System.out.println(cosine_similarity(createSet(text1), createSet(text2)));
-	}
-
 	public static Map<String, Double> createSet(String text) {
 		Map<String, Double> match = new HashMap<String, Double>();
 		StringTokenizer tk = new StringTokenizer(text, " ");
