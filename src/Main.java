@@ -1,12 +1,7 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Main {
 
@@ -43,44 +38,11 @@ public class Main {
 		// Histogramme de similarité des épisodes par rapport au numéro d'un épisode donné
 		System.out.println("Numéro de l'épisode ?");
 		Scanner userInput = new Scanner(System.in);
-		int num_episode = userInput.nextInt();
-
-		// Map<épisode, similarité>
-		Map<Integer, Double> sim_episode = new HashMap<Integer, Double>();
-
-		for (int j = 0; j != eps.size(); j++)
-		{
-			if (j == num_episode)
-				continue;
-			
-			sim_episode.put(j, mat_simil[num_episode][j]);
-		}
-		
-		// Tri
-		Comparator<Double> valueComparator = new Comparator<Double>() {
-			@Override
-			public int compare(Double o1, Double o2) {
-				return o2.compareTo(o1);
-			}
-		};
-		MapValueComparator<Integer, Double> mapComparator = new MapValueComparator<Integer, Double>(sim_episode, valueComparator);
-		Map<Integer, Double> sortedOnValuesMap = new TreeMap<Integer, Double>(mapComparator);
-		sortedOnValuesMap.putAll(sim_episode);
+		Map<Integer, Double> similEpisodeMap = TextComparator.getSimilarities(userInput.nextInt(), mat_simil);
 
 		// Affichage
-		for (Map.Entry<Integer, Double> entry : sortedOnValuesMap.entrySet()) {
+		for (Map.Entry<Integer, Double> entry : similEpisodeMap.entrySet()) {
 		     System.out.println("Episode " + entry.getKey() + " : " + entry.getValue());
-		}
-		
-		// Histogramme de similarité des épisodes par rapport au résumé d'un épisode donné
-		System.out.println("Résumé ?");
-		
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		StringBuffer sum = new StringBuffer();
-		String inputLine;
-		
-		while (!(inputLine = in.readLine()).equals("")) {
-			sum.append(inputLine + " ");
 		}
 	}
 }
