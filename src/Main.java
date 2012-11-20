@@ -17,6 +17,7 @@ public class Main {
 
 		for (int i = 0; i != eps.size(); i++) {
 	        eps.get(i).setStemmedSummary(a.stem(eps.get(i).getSummary()));
+	        System.out.println(a.stem(eps.get(i).getSummary()));
 		}
 	}
 }
