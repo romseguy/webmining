@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ public class Main {
 			for (int j = 0; j != eps.size(); j++)
 				mat_simil[i][j] = TextComparator.cosine_similarity(eps.get(i).getFreqVector(), eps.get(j).getFreqVector());
 
-		// Histogramme
+		// Histogramme de similarité des épisodes par rapport au numéro d'un épisode donné
 		System.out.println("Numéro de l'épisode ?");
 		Scanner userInput = new Scanner(System.in);
 		int num_episode = userInput.nextInt();
@@ -68,6 +70,17 @@ public class Main {
 		// Affichage
 		for (Map.Entry<Integer, Double> entry : sortedOnValuesMap.entrySet()) {
 		     System.out.println("Episode " + entry.getKey() + " : " + entry.getValue());
+		}
+		
+		// Histogramme de similarité des épisodes par rapport au résumé d'un épisode donné
+		System.out.println("Résumé ?");
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		StringBuffer sum = new StringBuffer();
+		String inputLine;
+		
+		while (!(inputLine = in.readLine()).equals("")) {
+			sum.append(inputLine + " ");
 		}
 	}
 }
